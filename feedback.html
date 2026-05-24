@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>mandatory vibe check ig 😭</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --pink:#FF3D7F;--soft:#FFB3CC;--cream:#FFF8F3;--dark:#1A0A10;
+  --text:#2D1520;--muted:#8B5A72;
+}
+html,body{
+  height:100%;font-family:'Space Grotesk',sans-serif;
+  background:linear-gradient(135deg,#FFF0F5 0%,#FFE8F0 50%,#FFF5F0 100%);
+  overflow-x:hidden;color:var(--text);
+}
+
+/* flying emojis */
+.sky{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.flyer{
+  position:absolute;bottom:-80px;
+  animation:flyUp linear forwards;
+  opacity:0;user-select:none;
+}
+@keyframes flyUp{
+  0%{opacity:0;transform:translateY(0) rotate(-10deg) scale(0.7);}
+  8%{opacity:1;}
+  92%{opacity:1;}
+  100%{opacity:0;transform:translateY(-110vh) rotate(30deg) scale(1.3);}
+}
+
+/* page system — full viewport height, centered */
+.page{
+  display:none;min-height:100vh;
+  align-items:center;justify-content:center;
+  flex-direction:column;padding:28px 20px 48px;
+  position:relative;z-index:2;
+  animation:pageIn 0.45s cubic-bezier(.22,.68,0,1.2) both;
+}
+.page.active{display:flex;}
+@keyframes pageIn{
+  from{opacity:0;transform:translateY(24px) scale(0.97);}
+  to{opacity:1;transform:translateY(0) scale(1);}
+}
+
+/* ── INTRO PAGE ── */
+.intro-box{
+  background:white;border-radius:28px;padding:40px 36px;
+  max-width:600px;width:100%;
+  box-shadow:0 8px 40px rgba(255,61,127,0.13);
+  border:1.5px solid #FFE0ED;text-align:center;
+}
+.intro-box .tag{
+  display:inline-block;background:#FFF0F7;color:var(--pink);
+  font-size:0.7rem;font-weight:700;letter-spacing:2.5px;
+  text-transform:uppercase;padding:6px 16px;border-radius:50px;
+  border:1.5px solid #FFD6E5;margin-bottom:20px;
+}
+.intro-box h1{
+  font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;
+  color:var(--pink);line-height:1.2;margin-bottom:18px;
+}
+.intro-box p{
+  font-size:0.97rem;color:var(--muted);line-height:1.75;margin-bottom:10px;
+}
+.emoji-strip{font-size:1.6rem;letter-spacing:6px;margin:20px 0;
+  animation:hueshift 4s linear infinite;}
+@keyframes hueshift{0%{filter:hue-rotate(0);}100%{filter:hue-rotate(360deg);}}
+
+/* ── PROGRESS (shown on question pages) ── */
+.progress-wrap{
+  max-width:560px;width:100%;margin-bottom:18px;
+}
+.progress-bar{background:#FFD6E5;border-radius:50px;height:5px;overflow:hidden;}
+.progress-fill{
+  height:100%;background:linear-gradient(90deg,var(--pink),#FF6B9D);
+  border-radius:50px;transition:width 0.5s ease;width:0%;
+}
+.progress-label{font-size:0.75rem;color:var(--muted);text-align:right;margin-top:6px;}
+
+/* ── QUESTION CARD ── */
+.q-wrap{max-width:560px;width:100%;}
+.q-card{
+  background:white;border-radius:24px;padding:30px 28px;
+  box-shadow:0 6px 30px rgba(255,61,127,0.1);
+  border:1.5px solid #FFE0ED;margin-bottom:16px;
+}
+.q-num{
+  font-size:0.68rem;font-weight:700;letter-spacing:2.5px;
+  text-transform:uppercase;color:var(--soft);margin-bottom:10px;
+}
+.q-text{
+  font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;
+  color:var(--dark);line-height:1.55;margin-bottom:20px;
+}
+.options{display:flex;flex-direction:column;gap:10px;}
+.opt{
+  display:flex;align-items:center;gap:12px;padding:13px 16px;
+  border-radius:14px;border:2px solid #FFD6E5;cursor:pointer;
+  transition:all 0.2s ease;background:#FFF8FB;
+  font-size:0.93rem;color:var(--text);font-weight:500;
+  text-align:left;width:100%;
+}
+.opt:hover{border-color:var(--pink);background:#FFF0F5;transform:translateX(5px);}
+.opt.selected{
+  border-color:var(--pink);
+  background:linear-gradient(135deg,rgba(255,61,127,0.07),rgba(255,107,157,0.1));
+  color:var(--pink);font-weight:600;
+}
+.opt .dot{
+  width:18px;height:18px;border-radius:50%;border:2px solid #FFB3CC;
+  flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  transition:all 0.2s;
+}
+.opt.selected .dot{background:var(--pink);border-color:var(--pink);}
+.opt.selected .dot::after{content:'✓';color:white;font-size:10px;font-weight:800;}
+
+.opt-textarea{
+  width:100%;border:2px solid #FFD6E5;border-radius:14px;padding:12px 16px;
+  font-family:'Space Grotesk',sans-serif;font-size:0.9rem;
+  color:var(--text);background:#FFF8FB;resize:none;
+  transition:border 0.2s;margin-top:10px;
+}
+.opt-textarea:focus{outline:none;border-color:var(--pink);}
+
+/* ── BUTTONS ── */
+.nav-btn{
+  max-width:560px;width:100%;
+  background:linear-gradient(135deg,var(--pink),#FF6B9D);
+  color:white;border:none;padding:17px 40px;
+  font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;
+  border-radius:50px;cursor:pointer;
+  box-shadow:0 8px 24px rgba(255,61,127,0.35);
+  transition:all 0.3s ease;letter-spacing:0.5px;
+}
+.nav-btn:hover{transform:translateY(-3px);box-shadow:0 14px 32px rgba(255,61,127,0.45);}
+
+/* ── PHONE PAGE ── */
+.phone-card{
+  background:white;border-radius:24px;padding:36px 28px;
+  max-width:560px;width:100%;text-align:center;
+  box-shadow:0 6px 30px rgba(255,61,127,0.1);border:1.5px solid #FFE0ED;
+  margin-bottom:16px;
+}
+.phone-card h2{
+  font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:800;
+  color:var(--pink);margin-bottom:10px;
+}
+.phone-card p{font-size:0.93rem;color:var(--muted);line-height:1.7;margin-bottom:22px;}
+.phone-row{display:flex;gap:10px;max-width:380px;margin:0 auto 14px;}
+.phone-input{
+  flex:1;border:2px solid #FFD6E5;border-radius:14px;padding:14px 16px;
+  font-family:'Space Grotesk',sans-serif;font-size:1rem;color:var(--text);
+  background:#FFF8FB;transition:border 0.2s;
+}
+.phone-input:focus{outline:none;border-color:var(--pink);}
+.drop-btn{
+  background:linear-gradient(135deg,#4CAF50,#66BB6A);color:white;border:none;
+  padding:14px 22px;font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;
+  border-radius:14px;cursor:pointer;box-shadow:0 6px 20px rgba(76,175,80,0.3);
+  transition:all 0.3s;white-space:nowrap;
+}
+.drop-btn:hover{transform:translateY(-2px);}
+#noPhoneBtn{
+  background:linear-gradient(135deg,#f44336,#e57373);color:white;border:none;
+  padding:12px 24px;font-family:'Syne',sans-serif;font-weight:700;font-size:0.88rem;
+  border-radius:14px;cursor:pointer;box-shadow:0 4px 16px rgba(244,67,54,0.25);
+  position:relative;transition:all 0.2s;
+}
+
+/* ── FINAL PAGE ── */
+.final-box{
+  background:white;border-radius:28px;padding:48px 36px;
+  max-width:560px;width:100%;text-align:center;
+  box-shadow:0 8px 40px rgba(255,61,127,0.13);border:1.5px solid #FFE0ED;
+}
+.final-box h1{
+  font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;
+  color:var(--pink);margin-bottom:16px;
+  animation:pop 1.2s ease-in-out infinite alternate;
+}
+@keyframes pop{from{transform:scale(1);}to{transform:scale(1.05);}}
+.final-box p{color:var(--muted);font-size:0.97rem;line-height:1.8;}
+.emoji-burst{font-size:2.2rem;letter-spacing:6px;margin:22px 0;
+  animation:hueshift 3s linear infinite;}
+
+/* toast */
+.toast{
+  position:fixed;bottom:28px;left:50%;transform:translateX(-50%);
+  background:white;color:var(--pink);padding:11px 26px;border-radius:50px;
+  box-shadow:0 6px 28px rgba(0,0,0,0.1);font-weight:600;font-size:0.88rem;
+  border:2px solid var(--soft);z-index:9999;
+  opacity:0;transition:opacity 0.3s;pointer-events:none;
+}
+.toast.show{opacity:1;}
+
+@media(max-width:480px){
+  .intro-box{padding:30px 22px;}
+  .intro-box h1{font-size:1.6rem;}
+  .q-card{padding:22px 18px;}
+  .q-text{font-size:0.98rem;}
+  .phone-row{flex-direction:column;}
+  .final-box{padding:36px 22px;}
+}
+</style>
+</head>
+<body>
+
+<div class="sky" id="sky"></div>
+
+<!-- ════════════════ PAGE 0 · INTRO ════════════════ -->
+<div class="page active" id="pg0">
+  <div class="intro-box">
+    <div class="tag">🫣 mandatory evaluation</div>
+    <h1>welcome to your mandatory vibe check ig 😭</h1>
+    <div class="emoji-strip">🍃🐥🐣🐈🐈‍⬛🌥️🍧🍦</div>
+
+    <img src="./assets/IMG_5832.jpg" 
+  style="width:240px;height:240px;object-fit:contain;border-radius:0;
+  border:4px solid #FF3D7F;box-shadow:0 8px 30px rgba(255,61,127,0.25);
+  margin:10px auto 20px;display:block;"> 
+
+    <p>realized i still need to know a lot more about u so i made this little evaluation form mam 👀</p>
+<p>this is an official evaluation and ur results will determine a lot of things 🫣 no pressure but also full pressure</p>
+<p>answer honestly, don't overthink it, but also definitely take it seriously mam 👀 the ginger cat's activity depends on it 🐱</p>
+    <br>
+    <button class="nav-btn" style="max-width:100%;" onclick="goTo(1)">start the vibe check →</button>
+  </div>
+</div>
+
+<!-- ════════════════ PAGE 1 · Q1 ════════════════ -->
+<div class="page" id="pg1">
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label" id="progressLabel">question 1 of 14</div>
+  </div>
+  <div class="q-wrap">
+    <div class="q-card">
+      <div class="q-num">question 01</div>
+      <div class="q-text">umm be honest.. how hard did u actually panic when u realized i live exactly 3 mins away on arch road? 😭</div>
+      <div class="options" data-q="q1">
+        <button class="opt" data-val="full panic attack ig"><span class="dot"></span>full panic attack ig</button>
+        <button class="opt" data-val="thought u were a literal stalker"><span class="dot"></span>thought u were a literal stalker</button>
+        <button class="opt" data-val="secretly loved it tbh - ahem"><span class="dot"></span>secretly loved it tbh - ahem 🫣</button>
+      </div>
+    </div>
+    <button class="nav-btn" onclick="goTo(2)">next →</button>
+  </div>
+</div>
+
+<!-- ════════════════ PAGE 2 · Q2 ════════════════ -->
+<div class="page" id="pg2">
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill2"></div></div>
+    <div class="progress-label" id="progressLabel2">question 2 of 14</div>
+  </div>
+  <div class="q-wrap">
+    <div class="q-card">
+      <div class="q-num">question 02</div>
+      <div class="q-text">who actually had the better vibe at polar bear.. me or the ginger cat? 🫣</div>
+      <div class="options" data-q="q2">
+        <button class="opt" data-val="obviously the ginger cat"><span class="dot"></span>obviously the ginger cat 😭</button>
+        <button class="opt" data-val="okay fine u did ig"><span class="dot"></span>okay fine u did ig 👀</button>
+        <button class="opt" data-val="we matched energy"><span class="dot"></span>we matched energy</button>
+      </div>
+    </div>
+    <button class="nav-btn" onclick="goTo(3)">next →</button>
+  </div>
+</div>
+
+<!-- ════════════════ PAGE 3 · Q3 ════════════════ -->
+<div class="page" id="pg3">
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill3"></div></div>
+    <div class="progress-label" id="progressLabel3">question 3 of 14</div>
+  </div>
+  <div class="q-wrap">
+    <div class="q-card">
+      <div class="q-num">question 03</div>
+      <div class="q-text">umm seriously though.. what kind of dating is the ginger cat actually looking for right now? 🫣</div>
+      <div class="options" data-q="q3">
+        <button class="opt" data-val="just casual ice cream runs ig"><span class="dot"></span>just casual ice cream runs ig</button>
+        <button class="opt" data-val="long-term co-op mode"><span class="dot"></span>long-term co-op mode</button>
+        <button class="opt" data-val="still trying to figure it out yk"><span class="dot"></span>still trying to figure it out yk 🫣</button>
+      </div>
+    </div>
+    <button class="nav-btn" onclick="goTo(4)">next →</button>
+  </div>
+</div>
+
+<!-- ════════════════ PAGE 4 · Q4 ════════════════ -->
+<div class="page" id="pg4">
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill4"></div></div>
+    <div class="progress-label" id="progressLabel4">question 4 of 14</div>
+  </div>
+  <div class="q-wrap">
+    <div class="q-card">
+      <div class="q-num">question 04</div>
+      <div class="q-text">u looking for someone to match your lazy cat energy or someone to actually keep u on your toes mam? 👀</div>
+      <div class="options" data-q="q4">
+        <button class="opt" data-val="let me sleep all day"><span class="dot"></span>let me sleep all day 😭</button>
+        <button class="opt" data-val="keep me on my toes ig"><span class="dot"></span>keep me on my toes ig 🫣</button>
+        <button class="opt" data-val="a little bit of both tbh"><span class="dot"></span>a little bit of both tbh 👀</button>
+      </div>
+    </div>
+    <button class="nav-btn" onclick="goTo(5)">next →</button>
+  </div>
+</div>
+
+<!-- ════════════════ PAGE 5 · Q5 ════════════════ -->
+<div class="page" id="pg5">
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill5"></div></div>
+    <div class="progress-label" id="progressLabel5">question 5 of 14</div>
+  </div>
+  <div class="q-wrap">
+    <div class="q-card">
+      <div class="q-num">question 05</div>
+      <div class="q-text">umm what's your biggest green flag.. asking for a friend obviously 😭</div>
+      <div class="options" data-q="q5">
+        <button class="opt" data-val="good banter on texts"><span class="dot"></span>good banter on texts 👀</button>
+        <button class="opt" data-val="letting me sleep till noon"><span class="dot"></span>letting me sleep till noon 🫣</button>
+        <button class="opt" data-val="planning the unplanned roads"><span class="dot"></span>planning the unplanned roads 😭</button>
+        <button class="opt" data-val="custom"><span class="dot"></span>u can specify in chat ✍️</button>
+      </div>
+      <textarea class="opt-textarea" id="q5custom" placeholder="type your green flag here..." rows="2" style="display:none;"></textarea>
+    </div>
+    <button class="nav-btn" onclick="goTo(6)">next →</button>
+  </div>
+</div>
+
+<!-- ════════════════ PAGE 6 · Q6 ════════════════ -->
+<div class="page" id="pg6">
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill6"></div></div>
+    <div class="progress-label" id="progressLabel6">question 6 of 14</div>
+  </div>
+  <div class="q-wrap">
+    <div class="q-card">
+      <div class="q-num">question 06</div>
+      <div class="q-text">umm so what does your ideal date actually look like mam? 👀</div>
+      <div class="options" data-q="q6">
+        <button class="opt" data-val="getting lost on purpose ig"><span class="dot"></span>getting lost on purpose ig 😭</button>
+        <button class="opt" data-val="just driving with good music"><span class="dot"></span>just driving with good music 🫣</button>
+        <button class="opt" data-val="stopping for food every 10 mins"><span class="dot"></span>stopping for food every 10 mins 👀</button>
+      </div>
+    </div>
+    <button class="nav-btn" onclick="goTo(7)">next →</button>
+  </div>
+</div>
+
+<!-- ════════════════ PAGE 7 · Q7 ════════════════ -->
+<div class="page" id="pg7">
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill7"></div></div>
+    <div class="progress-label" id="progressLabel7">question 7 of 14</div>
+  </div>
+  <div class="q-wrap">
+    <div class="q-card">
+      <div class="q-num">question 07</div>
+      <div class="q-text">umm if i challenged u on the xbox right now would u forfeit or just accept the defeat with dignity? 🫣</div>
+      <div class="options" data-q="q7">
+        <button class="opt" data-val="i would literally destroy u"><span class="dot"></span>i would literally destroy u 😭</button>
+        <button class="opt" data-val="forfeit immediately ig"><span class="dot"></span>forfeit immediately ig 👀</button>
+        <button class="opt" data-val="plug out your controller"><span class="dot"></span>plug out your controller 🫣</button>
+      </div>
+    </div>
+    <button class="nav-btn" onclick="goTo(8)">next →</button>
+  </div>
+</div>
+
+<!-- ════════════════ PAGE 8 · Q8 ════════════════ -->
+<div class="page" id="pg8">
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill8"></div></div>
+    <div class="progress-label" id="progressLabel8">question 8 of 14</div>
+  </div>
+  <div class="q-wrap">
+    <div class="q-card">
+      <div class="q-num">question 08</div>
+      <div class="q-text">umm are we actually ever gonna go find those earrings or was that just a scam to get me out of the house? 😭</div>
+      <div class="options" data-q="q8">
+        <button class="opt" data-val="totally a scam"><span class="dot"></span>totally a scam 👀</button>
+        <button class="opt" data-val="we are finding them some day ig"><span class="dot"></span>we are finding them some day ig 🫣</button>
+        <button class="opt" data-val="may be"><span class="dot"></span>may be 🤷</button>
+      </div>
+    </div>
+    <button class="nav-btn" onclick="goTo(9)">next →</button>
+  </div>
+</div>
+
+<!-- ════════════════ PAGE 9 · Q9 ════════════════ -->
+<div class="page" id="pg9">
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill9"></div></div>
+    <div class="progress-label" id="progressLabel9">question 9 of 14</div>
+  </div>
+  <div class="q-wrap">
+    <div class="q-card">
+      <div class="q-num">question 09</div>
+      <div class="q-text">umm so is the hinge app officially getting deleted or do i need to buy u more ice cream first (until ur teeth loose sense)? 👀</div>
+      <div class="options" data-q="q9">
+        <button class="opt" data-val="already deleted it ig"><span class="dot"></span>already deleted it ig 🫣</button>
+        <button class="opt" data-val="buy me more polar bear first"><span class="dot"></span>buy me more polar bear first 😭</button>
+        <button class="opt" data-val="u still have to earn it mam"><span class="dot"></span>u still have to earn it mam 👀</button>
+      </div>
+    </div>
+    <button class="nav-btn" onclick="goTo(10)">next →</button>
+  </div>
+</div>
+
+<!-- ════════════════ PAGE 10 · Q10 ════════════════ -->
+<div class="page" id="pg10">
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill10"></div></div>
+    <div class="progress-label" id="progressLabel10">question 10 of 14</div>
+  </div>
+  <div class="q-wrap">
+    <div class="q-card">
+      <div class="q-num">question 10</div>
+      <div class="q-text">umm so are u actually gonna go out with me again or do i need to prepare for a whole pile of rejections? 😭</div>
+      <div class="options" data-q="q10">
+        <button class="opt" data-val="yes definitely" onclick="answers.q10='yes definitely';this.parentNode.querySelectorAll('.opt').forEach(b=>b.classList.remove('selected'));this.classList.add('selected');"><span class="dot"></span>yes definitely 👀</button>
+        <button class="opt" id="noRunBtn" data-val="no"><span class="dot"></span>no (i dare u to try 🫣)</button>
+      </div>
+    </div>
+    <button class="nav-btn" onclick="goTo(11)">next →</button>
+  </div>
+</div>
+
+<!-- ════════════════ PAGE 11 · Q11 ════════════════ -->
+<div class="page" id="pg11">
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill11"></div></div>
+    <div class="progress-label" id="progressLabel11">question 11 of 14</div>
+  </div>
+  <div class="q-wrap">
+    <div class="q-card">
+      <div class="q-num">question 11</div>
+      <div class="q-text">umm most importantly.. when is our next official date ginger cat? 😭</div>
+      <div class="options" data-q="q11">
+        <button class="opt" data-val="later today ig"><span class="dot"></span>later today ig 👀</button>
+        <button class="opt" data-val="today"><span class="dot"></span>today 🫣</button>
+        <button class="opt" data-val="literally right now"><span class="dot"></span>literally right now</button>
+      </div>
+    </div>
+    <button class="nav-btn" onclick="goTo(12)">next →</button>
+  </div>
+</div>
+
+<!-- ════════════════ PAGE 12 · Q12 ════════════════ -->
+<div class="page" id="pg12">
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill12"></div></div>
+    <div class="progress-label" id="progressLabel12">question 12 of 14</div>
+  </div>
+  <div class="q-wrap">
+    <div class="q-card">
+      <div class="q-num">question 12</div>
+      <div class="q-text">if u had to give me some constructive feedback right now what would it be? 👀</div>
+      <div class="options" data-q="q12">
+        <button class="opt" data-val="keep doing exactly what u are doing ig"><span class="dot"></span>keep doing exactly what u are doing ig</button>
+        <button class="opt" data-val="try a little harder to impress me"><span class="dot"></span>try a little harder to impress me</button>
+        <button class="opt" data-val="stop using so many emojis"><span class="dot"></span>stop using so many emojis</button>
+      </div>
+    </div>
+    <button class="nav-btn" onclick="goTo(13)">next →</button>
+  </div>
+</div>
+
+<!-- ════════════════ PAGE 13 · Q13 ════════════════ -->
+<div class="page" id="pg13">
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill13"></div></div>
+    <div class="progress-label" id="progressLabel13">question 13 of 14</div>
+  </div>
+  <div class="q-wrap">
+    <div class="q-card">
+      <div class="q-num">question 13</div>
+      <div class="q-text">umm so out of 10 how are we actually rating this whole dynamic so far? 😭</div>
+      <div class="options" data-q="q13">
+        <button class="opt" data-val="solid 11/10 mam"><span class="dot"></span>solid 11/10 mam</button>
+        <button class="opt" data-val="definitely room for improvement ig"><span class="dot"></span>definitely room for improvement ig</button>
+        <button class="opt" data-val="holding back my final score for now"><span class="dot"></span>holding back my final score for now</button>
+      </div>
+    </div>
+    <button class="nav-btn" onclick="goTo(14)">next →</button>
+  </div>
+</div>
+
+<!-- ════════════════ PAGE 14 · Q14 ════════════════ -->
+<div class="page" id="pg14">
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill14"></div></div>
+    <div class="progress-label" id="progressLabel14">question 14 of 14</div>
+  </div>
+  <div class="q-wrap">
+    <div class="q-card">
+      <div class="q-num">question 14</div>
+      <div class="q-text">what is my biggest green flag then? (like which u have found or xyz) 🌱</div>
+      <div class="options" data-q="q14">
+        <button class="opt" data-val="actually knowing how to keep a conversation going"><span class="dot"></span>actually knowing how to keep a conversation going</button>
+        <button class="opt" data-val="making you eat ice cream way too much"><span class="dot"></span>making you eat ice cream, way too much</button>
+        <button class="opt" data-val="the overall vibe is just top tier"><span class="dot"></span>the overall vibe is just top tier</button>
+      </div>
+    </div>
+    <button class="nav-btn" onclick="goTo(15)">next →</button>
+  </div>
+</div>
+
+<!-- ════════════════ PAGE 15 · PHONE ════════════════ -->
+<div class="page" id="pg15">
+  <div class="phone-card">
+    <div style="font-size:2.5rem;margin-bottom:14px;">📱</div>
+    <h2>okay last thing mam 👀</h2>
+    <p>are u actually gonna drop your number or am i gonna have to earn that too? 😭<br>stored securely, just for me, no cap 🫣</p>
+
+    <div id="phoneInputArea">
+      <div class="phone-row">
+        <input class="phone-input" id="phoneNum" type="tel" placeholder="your number ig 📱" maxlength="15">
+        <button class="drop-btn" onclick="submitYesPhone()">drop it 💌</button>
+      </div>
+      <button id="noPhoneBtn" onclick="noPhoneClick()">nope 🙅‍♀️</button>
+    </div>
+    <div id="phoneSkipped" style="display:none;color:var(--muted);font-size:0.9rem;margin-top:14px;">
+      okay fine 😭 u still passed tho
+    </div>
+  </div>
+  <button class="nav-btn" id="finalBtn" onclick="submitAll()" style="display:none;margin-top:4px;">
+    submit the vibe check ✨
+  </button>
+</div>
+
+<!-- ════════════════ FINAL PAGE ════════════════ -->
+<div class="page" id="pgFinal">
+  <div class="final-box">
+    <div class="emoji-burst">🍧🐈‍⬛🌥️🐣🍦🐥🍃🐈</div>
+    <h1>vibe check passed 💖</h1>
+    <p>
+      okay wow u actually did it 😭<br>
+      responses saved ig 👀<br>
+      ginger cat energy officially logged 🐱<br><br>
+      <strong style="color:var(--pink);">now go check your texts 🫣</strong>
+    </p>
+    <div class="emoji-burst" style="margin-top:20px;">💕🌸💕🌸💕</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── DATA ──
+const answers = {};
+let noPhoneAttempts = 0;
+let noBtnBusy = false;
+
+// ── FLYING EMOJIS ──
+const EMOJIS = ['🍃','🐥','🐣','🐈','🐈‍⬛','🌥️','🍧','🍦'];
+function spawnFlyer(){
+  const sky = document.getElementById('sky');
+  const el = document.createElement('div');
+  el.className = 'flyer';
+  el.textContent = EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
+  el.style.left = Math.random()*95 + '%';
+  const dur = 5 + Math.random()*6;
+  el.style.animationDuration = dur + 's';
+  el.style.fontSize = (1.3 + Math.random()*1.5) + 'rem';
+  sky.appendChild(el);
+  setTimeout(()=>el.remove(), dur*1000+500);
+}
+setInterval(spawnFlyer, 400);
+for(let i=0;i<12;i++) setTimeout(spawnFlyer, i*160);
+
+// ── OPTION CLICKS ──
+document.querySelectorAll('.options').forEach(group=>{
+  group.querySelectorAll('.opt').forEach(btn=>{
+    if(btn.id === 'noRunBtn') return; // handled separately
+    btn.addEventListener('click',()=>{
+      group.querySelectorAll('.opt').forEach(b=>b.classList.remove('selected'));
+      btn.classList.add('selected');
+      const q = group.dataset.q;
+      const val = btn.dataset.val;
+      if(q==='q5' && val==='custom'){
+        const box = document.getElementById('q5custom');
+        box.style.display='block';
+        box.focus();
+        answers[q] = box.value || '(custom)';
+        box.oninput = ()=>{ answers[q] = box.value || '(custom)'; };
+      } else {
+        const box = document.getElementById('q5custom');
+        if(box) box.style.display='none';
+        answers[q] = val;
+      }
+    });
+  });
+});
+
+// ── NO BUTTON ON Q10 (runs away) ──
+const noRunBtn = document.getElementById('noRunBtn');
+let noRunAttempts = 0;
+const noRunTexts = ['no (i dare u to try 🫣)','nice try 😭','faster mam 👀','lmaoo 🫣','okay 😭 stop','u wish 😂','last chance ig','give up!! 😭'];
+function moveNoRunBtn(){
+  if(noBtnBusy) return;
+  noBtnBusy = true;
+  noRunAttempts++;
+  noRunBtn.textContent = noRunTexts[Math.min(noRunAttempts, noRunTexts.length-1)];
+  const vw = window.innerWidth, vh = window.innerHeight;
+  const r = noRunBtn.getBoundingClientRect();
+  const x = Math.random()*(vw - r.width - 30) + 10;
+  const y = Math.random()*(vh - r.height - 30) + 10;
+  noRunBtn.style.position = 'fixed';
+  noRunBtn.style.zIndex = 999;
+  noRunBtn.style.left = x+'px';
+  noRunBtn.style.top = y+'px';
+  answers['q10'] = 'tried to click no but it ran away lol 😭';
+  setTimeout(()=>{ noBtnBusy = false; }, 350);
+}
+noRunBtn.addEventListener('mouseenter', moveNoRunBtn);
+noRunBtn.addEventListener('touchstart', e=>{ e.preventDefault(); moveNoRunBtn(); });
+document.addEventListener('mousemove', e=>{
+  if(!noRunBtn.style.position) return;
+  const r = noRunBtn.getBoundingClientRect();
+  const dist = Math.hypot(e.clientX-(r.left+r.width/2), e.clientY-(r.top+r.height/2));
+  if(dist < 110) moveNoRunBtn();
+});
+
+// ── PROGRESS ──
+const TOTAL_Q = 14;
+function setProgress(pgNum){
+  // pgNum 1-14 = questions, 0 = intro
+  const qIdx = pgNum - 1; // 0-based question index
+  if(pgNum < 1 || pgNum > TOTAL_Q) return;
+  const pct = Math.round((qIdx / TOTAL_Q) * 100);
+  // set all progress bars on this page
+  const fill = document.getElementById('progressFill'+(pgNum===1?'':pgNum));
+  const label = document.getElementById('progressLabel'+(pgNum===1?'':pgNum));
+  if(fill) fill.style.width = pct+'%';
+  if(label) label.textContent = `question ${pgNum} of ${TOTAL_Q}`;
+}
+
+// ── PAGE NAV ──
+let currentPg = 0;
+function goTo(n){
+  const cur = document.getElementById(currentPg===0?'pg0':'pg'+currentPg);
+  if(cur) cur.classList.remove('active');
+  currentPg = n;
+  const next = document.getElementById(n==='final'?'pgFinal':'pg'+n);
+  if(next) next.classList.add('active');
+  // set progress
+  if(n>=1 && n<=TOTAL_Q) setProgress(n);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── PHONE ──
+function submitYesPhone(){
+  const num = document.getElementById('phoneNum').value.trim();
+  if(!num){ showToast('drop a number first mam 👀'); return; }
+  answers['phone'] = num;
+  document.getElementById('phoneInputArea').style.display='none';
+  const msg = document.getElementById('phoneSkipped');
+  msg.style.display='block';
+  msg.textContent='number saved 💌 okay wow';
+  document.getElementById('finalBtn').style.display='block';
+}
+
+const noPhoneTexts=['nope 🙅‍♀️','really? 🫣','come on mam 😭','just drop it ig','are u being rude 🥺','okay FINE but 👀','last chance 😭','ur killing me ','fine be like that','just do it!!'];
+function noPhoneClick(){
+  if(noBtnBusy) return;
+  noBtnBusy = true;
+  noPhoneAttempts++;
+  const btn = document.getElementById('noPhoneBtn');
+  const vw=window.innerWidth, vh=window.innerHeight;
+  btn.style.position='fixed'; btn.style.zIndex=9999;
+  const x=Math.random()*(vw-180)+20, y=Math.random()*(vh-80)+20;
+  btn.style.left=x+'px'; btn.style.top=y+'px';
+  btn.textContent = noPhoneTexts[Math.min(noPhoneAttempts-1, noPhoneTexts.length-1)];
+  setTimeout(()=>{ noBtnBusy=false; },400);
+  if(noPhoneAttempts>=6){
+    setTimeout(()=>{
+      btn.style.position='relative'; btn.style.left=''; btn.style.top='';
+      btn.textContent='okay fine i give up 😭';
+      btn.onclick=()=>{
+        answers['phone']='declined to share number ig';
+        document.getElementById('phoneInputArea').style.display='none';
+        document.getElementById('phoneSkipped').style.display='block';
+        document.getElementById('finalBtn').style.display='block';
+      };
+      noBtnBusy=false;
+    },700);
+  }
+}
+document.addEventListener('mousemove',e=>{
+  const btn=document.getElementById('noPhoneBtn');
+  if(!btn||!btn.style.position) return;
+  const r=btn.getBoundingClientRect();
+  const dist=Math.hypot(e.clientX-(r.left+r.width/2), e.clientY-(r.top+r.height/2));
+  if(dist<110) noPhoneClick();
+});
+
+// ── SUBMIT ──
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbz7lfyej_XUXDSXDeBeWAsKoVvMQHasaz1_HV3rTuUloo_PK8pM9GrLxT2f-JjlWikGmQ/exec';
+async function submitAll(){
+  showToast('saving ur responses ig 💾');
+  const payload = { timestamp: new Date().toISOString(), ...answers };
+  try {
+    await fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+  } catch(e){ console.log('sent ig'); }
+  goTo('final');
+  for(let i=0;i<24;i++) setTimeout(spawnFlyer, i*70);
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+</script>
+</body>
+</html>
