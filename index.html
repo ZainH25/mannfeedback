@@ -663,6 +663,27 @@ body::after{
 const answers={};
 let noPhoneAttempts=0,noBtnBusy=false;
 
+// --- IMPORTANT: Define SHEET_URL at the top so saveAnswer can use it ---
+const SHEET_URL='https://script.google.com/macros/s/AKfycbzp4YDD_gnBONkGtDI76CnzL1DZ2tmVvyck_1Gf6hlsFYlq8B3tXisBeWnUdNLtGrT0Aw/exec';
+
+// --- NEW: Generate once per session ---
+const SESSION_ID = Date.now() + '-' + Math.random().toString(36).slice(2,7);
+
+// --- NEW: Save Answer function ---
+function saveAnswer(question, answer){
+  fetch(SHEET_URL, {
+    method:'POST', mode:'no-cors',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({
+      type: 'answer',
+      sessionId: SESSION_ID,
+      timestamp: new Date().toISOString(),
+      question: question,
+      answer: answer
+    })
+  }).catch(()=>{});
+}
+
 const EMOJIS=['🍃','🐥','🐣','🐈','🐈‍⬛','🌥️','🍧','🍦'];
 function spawnFlyer(){
   const sky=document.getElementById('sky'),el=document.createElement('div');
@@ -684,17 +705,18 @@ document.querySelectorAll('.options').forEach(group=>{
     btn.addEventListener('click',()=>{
       group.querySelectorAll('.opt').forEach(b=>b.classList.remove('selected'));
       btn.classList.add('selected');
-      const q=group.dataset.q,val=btn.dataset.val;
+      const q=group.dataset.q, val=btn.dataset.val;
       if(q==='q5'&&val==='custom'){
         const box=document.getElementById('q5custom');
         box.style.display='block';box.focus();
         answers[q]=box.value||'(custom)';
-        box.oninput=()=>{answers[q]=box.value||'(custom)';};
+        box.oninput=()=>{ answers[q]=box.value||'(custom)'; saveAnswer(q, answers[q]); };
       } else {
         const box=document.getElementById('q5custom');
         if(box) box.style.display='none';
         answers[q]=val;
       }
+      saveAnswer(q, val); // ← saves immediately on click
     });
   });
 });
@@ -744,6 +766,7 @@ function submitYesPhone(){
   const num=document.getElementById('phoneNum').value.trim();
   if(!num){showToast('drop a number first mam 👀');return;}
   answers['phone']=num;
+  saveAnswer('phone', num); // ← saves number right away
   document.getElementById('phoneInputArea').style.display='none';
   document.getElementById('phoneSkipped').style.display='none';
   document.getElementById('thankYouCard').style.display='block';
@@ -782,9 +805,8 @@ document.addEventListener('mousemove',e=>{
   if(Math.hypot(e.clientX-(r.left+r.width/2),e.clientY-(r.top+r.height/2))<110) noPhoneClick();
 });
 
-const SHEET_URL='https://script.google.com/macros/s/AKfycbz7lfyej_XUXDSXDeBeWAsKoVvMQHasaz1_HV3rTuUloo_PK8pM9GrLxT2f-JjlWikGmQ/exec';
 async function submitAll(){
-  const payload={timestamp:new Date().toISOString(),...answers};
+  const payload={type: 'final_submission', sessionId: SESSION_ID, timestamp:new Date().toISOString(),...answers};
   try{
     await fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
   }catch(e){console.log('sent ig');}
