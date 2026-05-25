@@ -8,14 +8,40 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --pink:#FF3D7F;--soft:#FFB3CC;--cream:#FFF8F3;--dark:#1A0A10;
-  --text:#2D1520;--muted:#8B5A72;
+  --sky:#0EA5E9;
+  --sky2:#38BDF8;
+  --sky3:#7DD3FC;
+  --faint:#E0F2FE;
+  --faint2:#F0F9FF;
+  --bg1:#F0F9FF;
+  --bg2:#E0F2FE;
+  --bg3:#BAE6FD;
+  --card:#FFFFFF;
+  --card-border:#BAE6FD;
+  --text:#0C4A6E;
+  --muted:#4D9EC0;
+  --dark:#082F49;
 }
 html,body{
   height:100%;font-family:'Space Grotesk',sans-serif;
-  background:linear-gradient(135deg,#FFF0F5 0%,#FFE8F0 50%,#FFF5F0 100%);
+  background:linear-gradient(160deg,#F0F9FF 0%,#E0F2FE 40%,#BAE6FD 100%);
   overflow-x:hidden;color:var(--text);
 }
+
+/* soft cloud blobs */
+body::before{
+  content:'';position:fixed;width:600px;height:600px;
+  background:radial-gradient(circle,rgba(14,165,233,0.12) 0%,transparent 70%);
+  top:-150px;right:-150px;pointer-events:none;z-index:0;
+  animation:drift 10s ease-in-out infinite alternate;
+}
+body::after{
+  content:'';position:fixed;width:500px;height:500px;
+  background:radial-gradient(circle,rgba(56,189,248,0.1) 0%,transparent 70%);
+  bottom:-100px;left:-100px;pointer-events:none;z-index:0;
+  animation:drift 7s ease-in-out infinite alternate-reverse;
+}
+@keyframes drift{from{transform:translate(0,0);}to{transform:translate(30px,30px);}}
 
 /* flying emojis */
 .sky{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
@@ -31,7 +57,7 @@ html,body{
   100%{opacity:0;transform:translateY(-110vh) rotate(30deg) scale(1.3);}
 }
 
-/* page system — full viewport height, centered */
+/* page system */
 .page{
   display:none;min-height:100vh;
   align-items:center;justify-content:center;
@@ -45,22 +71,28 @@ html,body{
   to{opacity:1;transform:translateY(0) scale(1);}
 }
 
-/* ── INTRO PAGE ── */
+/* INTRO */
 .intro-box{
-  background:white;border-radius:28px;padding:40px 36px;
+  background:rgba(255,255,255,0.75);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-radius:28px;padding:40px 36px;
   max-width:600px;width:100%;
-  box-shadow:0 8px 40px rgba(255,61,127,0.13);
-  border:1.5px solid #FFE0ED;text-align:center;
+  box-shadow:0 8px 60px rgba(14,165,233,0.15),0 0 0 1px rgba(14,165,233,0.1);
+  border:1px solid rgba(186,230,253,0.8);text-align:center;
 }
 .intro-box .tag{
-  display:inline-block;background:#FFF0F7;color:var(--pink);
+  display:inline-block;
+  background:linear-gradient(135deg,rgba(14,165,233,0.12),rgba(56,189,248,0.12));
+  color:var(--sky);
   font-size:0.7rem;font-weight:700;letter-spacing:2.5px;
   text-transform:uppercase;padding:6px 16px;border-radius:50px;
-  border:1.5px solid #FFD6E5;margin-bottom:20px;
+  border:1px solid rgba(14,165,233,0.25);margin-bottom:20px;
 }
 .intro-box h1{
   font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;
-  color:var(--pink);line-height:1.2;margin-bottom:18px;
+  background:linear-gradient(135deg,#0284C7,#38BDF8,#0EA5E9);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;line-height:1.2;margin-bottom:18px;
 }
 .intro-box p{
   font-size:0.97rem;color:var(--muted);line-height:1.75;margin-bottom:10px;
@@ -69,27 +101,44 @@ html,body{
   animation:hueshift 4s linear infinite;}
 @keyframes hueshift{0%{filter:hue-rotate(0);}100%{filter:hue-rotate(360deg);}}
 
-/* ── PROGRESS (shown on question pages) ── */
-.progress-wrap{
-  max-width:560px;width:100%;margin-bottom:18px;
+.intro-img{
+ width:160px;height:160px;object-fit:fill;border-radius:16px;
+  border:3px solid var(--sky2);
+  box-shadow:0 0 0 6px rgba(56,189,248,0.15),0 8px 40px rgba(14,165,233,0.25);
+  margin:14px auto 22px;display:block;
 }
-.progress-bar{background:#FFD6E5;border-radius:50px;height:5px;overflow:hidden;}
+
+.divider{
+  width:60px;height:2px;margin:16px auto;
+  background:linear-gradient(90deg,var(--sky),var(--sky3));
+  border-radius:2px;opacity:0.5;
+}
+
+/* PROGRESS */
+.progress-wrap{max-width:560px;width:100%;margin-bottom:18px;}
+.progress-bar{
+  background:rgba(14,165,233,0.12);
+  border-radius:50px;height:5px;overflow:hidden;
+}
 .progress-fill{
-  height:100%;background:linear-gradient(90deg,var(--pink),#FF6B9D);
+  height:100%;
+  background:linear-gradient(90deg,#0284C7,#38BDF8);
   border-radius:50px;transition:width 0.5s ease;width:0%;
 }
 .progress-label{font-size:0.75rem;color:var(--muted);text-align:right;margin-top:6px;}
 
-/* ── QUESTION CARD ── */
+/* QUESTION CARD */
 .q-wrap{max-width:560px;width:100%;}
 .q-card{
-  background:white;border-radius:24px;padding:30px 28px;
-  box-shadow:0 6px 30px rgba(255,61,127,0.1);
-  border:1.5px solid #FFE0ED;margin-bottom:16px;
+  background:rgba(255,255,255,0.8);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-radius:24px;padding:30px 28px;
+  box-shadow:0 6px 40px rgba(14,165,233,0.1),0 0 0 1px rgba(186,230,253,0.6);
+  border:1px solid rgba(186,230,253,0.9);margin-bottom:16px;
 }
 .q-num{
   font-size:0.68rem;font-weight:700;letter-spacing:2.5px;
-  text-transform:uppercase;color:var(--soft);margin-bottom:10px;
+  text-transform:uppercase;color:var(--sky2);margin-bottom:10px;
 }
 .q-text{
   font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;
@@ -98,111 +147,162 @@ html,body{
 .options{display:flex;flex-direction:column;gap:10px;}
 .opt{
   display:flex;align-items:center;gap:12px;padding:13px 16px;
-  border-radius:14px;border:2px solid #FFD6E5;cursor:pointer;
-  transition:all 0.2s ease;background:#FFF8FB;
-  font-size:0.93rem;color:var(--text);font-weight:500;
+  border-radius:14px;border:1.5px solid rgba(186,230,253,0.8);cursor:pointer;
+  transition:all 0.2s ease;
+  background:rgba(240,249,255,0.6);
+  font-size:0.93rem;color:var(--muted);font-weight:500;
   text-align:left;width:100%;
 }
-.opt:hover{border-color:var(--pink);background:#FFF0F5;transform:translateX(5px);}
+.opt:hover{
+  border-color:var(--sky2);
+  background:rgba(224,242,254,0.8);
+  color:var(--text);transform:translateX(5px);
+}
 .opt.selected{
-  border-color:var(--pink);
-  background:linear-gradient(135deg,rgba(255,61,127,0.07),rgba(255,107,157,0.1));
-  color:var(--pink);font-weight:600;
+  border-color:var(--sky);
+  background:linear-gradient(135deg,rgba(14,165,233,0.1),rgba(56,189,248,0.08));
+  color:var(--sky);font-weight:600;
+  box-shadow:0 0 20px rgba(14,165,233,0.12);
 }
 .opt .dot{
-  width:18px;height:18px;border-radius:50%;border:2px solid #FFB3CC;
+  width:18px;height:18px;border-radius:50%;
+  border:2px solid rgba(14,165,233,0.3);
   flex-shrink:0;display:flex;align-items:center;justify-content:center;
-  transition:all 0.2s;
+  transition:all 0.2s;background:white;
 }
-.opt.selected .dot{background:var(--pink);border-color:var(--pink);}
+.opt.selected .dot{
+  background:linear-gradient(135deg,#0284C7,#38BDF8);
+  border-color:var(--sky);
+  box-shadow:0 0 10px rgba(14,165,233,0.4);
+}
 .opt.selected .dot::after{content:'✓';color:white;font-size:10px;font-weight:800;}
 
 .opt-textarea{
-  width:100%;border:2px solid #FFD6E5;border-radius:14px;padding:12px 16px;
+  width:100%;border:1.5px solid rgba(186,230,253,0.8);border-radius:14px;padding:12px 16px;
   font-family:'Space Grotesk',sans-serif;font-size:0.9rem;
-  color:var(--text);background:#FFF8FB;resize:none;
+  color:var(--text);background:rgba(240,249,255,0.7);resize:none;
   transition:border 0.2s;margin-top:10px;
 }
-.opt-textarea:focus{outline:none;border-color:var(--pink);}
+.opt-textarea:focus{outline:none;border-color:var(--sky);}
+.opt-textarea::placeholder{color:var(--muted);opacity:0.7;}
 
-/* ── BUTTONS ── */
+/* BUTTONS */
 .nav-btn{
   max-width:560px;width:100%;
-  background:linear-gradient(135deg,var(--pink),#FF6B9D);
+  background:linear-gradient(135deg,#0284C7,#38BDF8);
   color:white;border:none;padding:17px 40px;
   font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;
   border-radius:50px;cursor:pointer;
-  box-shadow:0 8px 24px rgba(255,61,127,0.35);
+  box-shadow:0 8px 30px rgba(14,165,233,0.35);
   transition:all 0.3s ease;letter-spacing:0.5px;
 }
-.nav-btn:hover{transform:translateY(-3px);box-shadow:0 14px 32px rgba(255,61,127,0.45);}
+.nav-btn:hover{
+  transform:translateY(-3px);
+  box-shadow:0 14px 40px rgba(14,165,233,0.45);
+}
 
-/* ── PHONE PAGE ── */
+/* PHONE PAGE */
 .phone-card{
-  background:white;border-radius:24px;padding:36px 28px;
+  background:rgba(255,255,255,0.8);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-radius:24px;padding:36px 28px;
   max-width:560px;width:100%;text-align:center;
-  box-shadow:0 6px 30px rgba(255,61,127,0.1);border:1.5px solid #FFE0ED;
-  margin-bottom:16px;
+  box-shadow:0 6px 40px rgba(14,165,233,0.1);
+  border:1px solid rgba(186,230,253,0.9);margin-bottom:16px;
 }
 .phone-card h2{
   font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:800;
-  color:var(--pink);margin-bottom:10px;
+  background:linear-gradient(135deg,#0284C7,#38BDF8);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;margin-bottom:10px;
 }
 .phone-card p{font-size:0.93rem;color:var(--muted);line-height:1.7;margin-bottom:22px;}
 .phone-row{display:flex;gap:10px;max-width:380px;margin:0 auto 14px;}
 .phone-input{
-  flex:1;border:2px solid #FFD6E5;border-radius:14px;padding:14px 16px;
+  flex:1;border:1.5px solid rgba(186,230,253,0.9);border-radius:14px;padding:14px 16px;
   font-family:'Space Grotesk',sans-serif;font-size:1rem;color:var(--text);
-  background:#FFF8FB;transition:border 0.2s;
+  background:rgba(240,249,255,0.7);transition:border 0.2s;
 }
-.phone-input:focus{outline:none;border-color:var(--pink);}
+.phone-input:focus{outline:none;border-color:var(--sky);box-shadow:0 0 20px rgba(14,165,233,0.15);}
+.phone-input::placeholder{color:var(--muted);opacity:0.7;}
 .drop-btn{
-  background:linear-gradient(135deg,#4CAF50,#66BB6A);color:white;border:none;
+  background:linear-gradient(135deg,#0284C7,#38BDF8);color:white;border:none;
   padding:14px 22px;font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;
-  border-radius:14px;cursor:pointer;box-shadow:0 6px 20px rgba(76,175,80,0.3);
+  border-radius:14px;cursor:pointer;box-shadow:0 6px 20px rgba(14,165,233,0.3);
   transition:all 0.3s;white-space:nowrap;
 }
-.drop-btn:hover{transform:translateY(-2px);}
+.drop-btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(14,165,233,0.4);}
 #noPhoneBtn{
-  background:linear-gradient(135deg,#f44336,#e57373);color:white;border:none;
+  background:linear-gradient(135deg,#CBD5E1,#94A3B8);color:white;border:none;
   padding:12px 24px;font-family:'Syne',sans-serif;font-weight:700;font-size:0.88rem;
-  border-radius:14px;cursor:pointer;box-shadow:0 4px 16px rgba(244,67,54,0.25);
+  border-radius:14px;cursor:pointer;box-shadow:0 4px 16px rgba(148,163,184,0.25);
   position:relative;transition:all 0.2s;
 }
 
-/* ── FINAL PAGE ── */
+/* thank you card */
+#thankYouCard{
+  margin-top:20px;padding:22px;
+  background:linear-gradient(135deg,rgba(14,165,233,0.08),rgba(186,230,253,0.2));
+  border-radius:20px;border:1px solid rgba(14,165,233,0.2);
+}
+#thankYouCard img{
+  width:130px;height:130px;object-fit:cover;border-radius:50%;
+  border:3px solid var(--sky2);
+  box-shadow:0 0 0 6px rgba(56,189,248,0.15),0 8px 30px rgba(14,165,233,0.2);
+  margin:0 auto 14px;display:block;
+}
+#thankYouCard .ty-title{
+  font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;
+  color:var(--sky);margin-bottom:8px;
+}
+#thankYouCard .ty-msg{
+  color:var(--muted);font-size:0.88rem;line-height:1.7;
+}
+
+/* FINAL PAGE */
 .final-box{
-  background:white;border-radius:28px;padding:48px 36px;
+  background:rgba(255,255,255,0.8);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-radius:28px;padding:48px 36px;
   max-width:560px;width:100%;text-align:center;
-  box-shadow:0 8px 40px rgba(255,61,127,0.13);border:1.5px solid #FFE0ED;
+  box-shadow:0 8px 60px rgba(14,165,233,0.15);
+  border:1px solid rgba(186,230,253,0.9);
 }
 .final-box h1{
   font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;
-  color:var(--pink);margin-bottom:16px;
-  animation:pop 1.2s ease-in-out infinite alternate;
+  background:linear-gradient(135deg,#0284C7,#38BDF8,#0EA5E9,#0284C7);
+  background-size:300%;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;margin-bottom:16px;
+  animation:shimmer 3s linear infinite,pop 1.2s ease-in-out infinite alternate;
 }
+@keyframes shimmer{0%{background-position:0%;}100%{background-position:300%;}}
 @keyframes pop{from{transform:scale(1);}to{transform:scale(1.05);}}
 .final-box p{color:var(--muted);font-size:0.97rem;line-height:1.8;}
-.emoji-burst{font-size:2.2rem;letter-spacing:6px;margin:22px 0;
-  animation:hueshift 3s linear infinite;}
+.emoji-burst{font-size:2.2rem;letter-spacing:6px;margin:22px 0;animation:hueshift 3s linear infinite;}
+.stars{font-size:1rem;letter-spacing:6px;color:var(--sky3);margin:10px 0;
+  animation:blink 2s ease-in-out infinite alternate;}
+@keyframes blink{from{opacity:0.3;}to{opacity:1;}}
 
 /* toast */
 .toast{
   position:fixed;bottom:28px;left:50%;transform:translateX(-50%);
-  background:white;color:var(--pink);padding:11px 26px;border-radius:50px;
-  box-shadow:0 6px 28px rgba(0,0,0,0.1);font-weight:600;font-size:0.88rem;
-  border:2px solid var(--soft);z-index:9999;
+  background:rgba(255,255,255,0.9);backdrop-filter:blur(10px);
+  color:var(--sky);padding:11px 26px;border-radius:50px;
+  box-shadow:0 6px 28px rgba(14,165,233,0.2);
+  font-weight:600;font-size:0.88rem;
+  border:1px solid rgba(14,165,233,0.2);z-index:9999;
   opacity:0;transition:opacity 0.3s;pointer-events:none;
 }
 .toast.show{opacity:1;}
 
 @media(max-width:480px){
-  .intro-box{padding:30px 22px;}
+  .intro-box{padding:28px 18px;}
   .intro-box h1{font-size:1.6rem;}
-  .q-card{padding:22px 18px;}
+  .q-card{padding:22px 16px;}
   .q-text{font-size:0.98rem;}
   .phone-row{flex-direction:column;}
-  .final-box{padding:36px 22px;}
+  .final-box{padding:32px 18px;}
 }
 </style>
 </head>
@@ -210,27 +310,23 @@ html,body{
 
 <div class="sky" id="sky"></div>
 
-<!-- ════════════════ PAGE 0 · INTRO ════════════════ -->
+<!-- ════════════ PAGE 0 · INTRO ════════════ -->
 <div class="page active" id="pg0">
   <div class="intro-box">
     <div class="tag">🫣 mandatory evaluation</div>
     <h1>welcome to your mandatory vibe check ig 😭</h1>
     <div class="emoji-strip">🍃🐥🐣🐈🐈‍⬛🌥️🍧🍦</div>
-
-    <img src="./assets/IMG_5832.jpg" 
-  style="width:240px;height:240px;object-fit:contain;border-radius:0;
-  border:4px solid #FF3D7F;box-shadow:0 8px 30px rgba(255,61,127,0.25);
-  margin:10px auto 20px;display:block;"> 
-
-    <p>realized i still need to know a lot more about u so i made this little evaluation form mam 👀</p>
-<p>this is an official evaluation and ur results will determine a lot of things 🫣 no pressure but also full pressure</p>
-<p>answer honestly, don't overthink it, but also definitely take it seriously mam 👀 the ginger cat's activity depends on it 🐱</p>
+    <img src="./assets/IMG_5832.jpg" class="intro-img" alt="">
+    <div class="divider"></div>
+    <p>okay so i made this because i genuinely need answers 👀 u show up, match my energy, eat ice cream with me and now i have questions 😭</p>
+    <p>this is an official evaluation and ur results will determine a lot of things 🫣 no pressure but also full pressure</p>
+    <p>answer honestly, don't overthink it, but also definitely take it seriously mam 👀 the ginger cat's future depends on it 🐱</p>
     <br>
     <button class="nav-btn" style="max-width:100%;" onclick="goTo(1)">start the vibe check →</button>
   </div>
 </div>
 
-<!-- ════════════════ PAGE 1 · Q1 ════════════════ -->
+<!-- ════════════ PAGE 1 · Q1 ════════════ -->
 <div class="page" id="pg1">
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
@@ -250,7 +346,7 @@ html,body{
   </div>
 </div>
 
-<!-- ════════════════ PAGE 2 · Q2 ════════════════ -->
+<!-- ════════════ PAGE 2 · Q2 ════════════ -->
 <div class="page" id="pg2">
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="progressFill2"></div></div>
@@ -270,7 +366,7 @@ html,body{
   </div>
 </div>
 
-<!-- ════════════════ PAGE 3 · Q3 ════════════════ -->
+<!-- ════════════ PAGE 3 · Q3 ════════════ -->
 <div class="page" id="pg3">
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="progressFill3"></div></div>
@@ -290,7 +386,7 @@ html,body{
   </div>
 </div>
 
-<!-- ════════════════ PAGE 4 · Q4 ════════════════ -->
+<!-- ════════════ PAGE 4 · Q4 ════════════ -->
 <div class="page" id="pg4">
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="progressFill4"></div></div>
@@ -310,7 +406,7 @@ html,body{
   </div>
 </div>
 
-<!-- ════════════════ PAGE 5 · Q5 ════════════════ -->
+<!-- ════════════ PAGE 5 · Q5 ════════════ -->
 <div class="page" id="pg5">
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="progressFill5"></div></div>
@@ -332,7 +428,7 @@ html,body{
   </div>
 </div>
 
-<!-- ════════════════ PAGE 6 · Q6 ════════════════ -->
+<!-- ════════════ PAGE 6 · Q6 ════════════ -->
 <div class="page" id="pg6">
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="progressFill6"></div></div>
@@ -352,7 +448,7 @@ html,body{
   </div>
 </div>
 
-<!-- ════════════════ PAGE 7 · Q7 ════════════════ -->
+<!-- ════════════ PAGE 7 · Q7 ════════════ -->
 <div class="page" id="pg7">
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="progressFill7"></div></div>
@@ -372,7 +468,7 @@ html,body{
   </div>
 </div>
 
-<!-- ════════════════ PAGE 8 · Q8 ════════════════ -->
+<!-- ════════════ PAGE 8 · Q8 ════════════ -->
 <div class="page" id="pg8">
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="progressFill8"></div></div>
@@ -392,7 +488,7 @@ html,body{
   </div>
 </div>
 
-<!-- ════════════════ PAGE 9 · Q9 ════════════════ -->
+<!-- ════════════ PAGE 9 · Q9 ════════════ -->
 <div class="page" id="pg9">
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="progressFill9"></div></div>
@@ -412,7 +508,7 @@ html,body{
   </div>
 </div>
 
-<!-- ════════════════ PAGE 10 · Q10 ════════════════ -->
+<!-- ════════════ PAGE 10 · Q10 ════════════ -->
 <div class="page" id="pg10">
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="progressFill10"></div></div>
@@ -431,7 +527,7 @@ html,body{
   </div>
 </div>
 
-<!-- ════════════════ PAGE 11 · Q11 ════════════════ -->
+<!-- ════════════ PAGE 11 · Q11 ════════════ -->
 <div class="page" id="pg11">
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="progressFill11"></div></div>
@@ -451,7 +547,7 @@ html,body{
   </div>
 </div>
 
-<!-- ════════════════ PAGE 12 · Q12 ════════════════ -->
+<!-- ════════════ PAGE 12 · Q12 ════════════ -->
 <div class="page" id="pg12">
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="progressFill12"></div></div>
@@ -471,7 +567,7 @@ html,body{
   </div>
 </div>
 
-<!-- ════════════════ PAGE 13 · Q13 ════════════════ -->
+<!-- ════════════ PAGE 13 · Q13 ════════════ -->
 <div class="page" id="pg13">
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="progressFill13"></div></div>
@@ -491,7 +587,7 @@ html,body{
   </div>
 </div>
 
-<!-- ════════════════ PAGE 14 · Q14 ════════════════ -->
+<!-- ════════════ PAGE 14 · Q14 ════════════ -->
 <div class="page" id="pg14">
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="progressFill14"></div></div>
@@ -511,13 +607,12 @@ html,body{
   </div>
 </div>
 
-<!-- ════════════════ PAGE 15 · PHONE ════════════════ -->
+<!-- ════════════ PAGE 15 · PHONE ════════════ -->
 <div class="page" id="pg15">
   <div class="phone-card">
     <div style="font-size:2.5rem;margin-bottom:14px;">📱</div>
     <h2>okay last thing mam 👀</h2>
     <p>are u actually gonna drop your number or am i gonna have to earn that too? 😭<br>stored securely, just for me, no cap 🫣</p>
-
     <div id="phoneInputArea">
       <div class="phone-row">
         <input class="phone-input" id="phoneNum" type="tel" placeholder="your number ig 📱" maxlength="15">
@@ -528,159 +623,147 @@ html,body{
     <div id="phoneSkipped" style="display:none;color:var(--muted);font-size:0.9rem;margin-top:14px;">
       okay fine 😭 u still passed tho
     </div>
+    <div id="thankYouCard" style="display:none;">
+      <img src="./assets/IMG_5832.jpg" alt="">
+      <div class="ty-title">okay WOW u actually did it 😭</div>
+      <div class="ty-msg">
+        thank u for your time mam 👀 means everything ig<br>
+        ur number is saved and there is literally no escape now 🫣<br>
+        expect random texts at 2am, food debates, and unsolicited memes 😭<br>
+        <strong style="color:var(--sky);">ginger cat is officially trapped 🐱🩵</strong>
+      </div>
+    </div>
   </div>
   <button class="nav-btn" id="finalBtn" onclick="submitAll()" style="display:none;margin-top:4px;">
     submit the vibe check ✨
   </button>
 </div>
 
-<!-- ════════════════ FINAL PAGE ════════════════ -->
+<!-- ════════════ FINAL PAGE ════════════ -->
 <div class="page" id="pgFinal">
   <div class="final-box">
+    <div class="stars">✦ ✦ ✦ ✦ ✦</div>
     <div class="emoji-burst">🍧🐈‍⬛🌥️🐣🍦🐥🍃🐈</div>
-    <h1>vibe check passed 💖</h1>
+    <h1>vibe check passed 🩵</h1>
+    <div class="divider"></div>
     <p>
       okay wow u actually did it 😭<br>
       responses saved ig 👀<br>
       ginger cat energy officially logged 🐱<br><br>
-      <strong style="color:var(--pink);">now go check your texts 🫣</strong>
+      <strong style="color:var(--sky);">now go check your texts 🫣</strong>
     </p>
-    <div class="emoji-burst" style="margin-top:20px;">💕🌸💕🌸💕</div>
+    <div class="emoji-burst" style="margin-top:16px;">🩵☁️🩵☁️🩵</div>
+    <div class="stars">✦ ✦ ✦ ✦ ✦</div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ── DATA ──
-const answers = {};
-let noPhoneAttempts = 0;
-let noBtnBusy = false;
+const answers={};
+let noPhoneAttempts=0,noBtnBusy=false;
 
-// ── FLYING EMOJIS ──
-const EMOJIS = ['🍃','🐥','🐣','🐈','🐈‍⬛','🌥️','🍧','🍦'];
+const EMOJIS=['🍃','🐥','🐣','🐈','🐈‍⬛','🌥️','🍧','🍦'];
 function spawnFlyer(){
-  const sky = document.getElementById('sky');
-  const el = document.createElement('div');
-  el.className = 'flyer';
-  el.textContent = EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
-  el.style.left = Math.random()*95 + '%';
-  const dur = 5 + Math.random()*6;
-  el.style.animationDuration = dur + 's';
-  el.style.fontSize = (1.3 + Math.random()*1.5) + 'rem';
+  const sky=document.getElementById('sky'),el=document.createElement('div');
+  el.className='flyer';
+  el.textContent=EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
+  el.style.left=Math.random()*95+'%';
+  const dur=5+Math.random()*6;
+  el.style.animationDuration=dur+'s';
+  el.style.fontSize=(1.3+Math.random()*1.5)+'rem';
   sky.appendChild(el);
-  setTimeout(()=>el.remove(), dur*1000+500);
+  setTimeout(()=>el.remove(),dur*1000+500);
 }
-setInterval(spawnFlyer, 400);
-for(let i=0;i<12;i++) setTimeout(spawnFlyer, i*160);
+setInterval(spawnFlyer,400);
+for(let i=0;i<12;i++) setTimeout(spawnFlyer,i*160);
 
-// ── OPTION CLICKS ──
 document.querySelectorAll('.options').forEach(group=>{
   group.querySelectorAll('.opt').forEach(btn=>{
-    if(btn.id === 'noRunBtn') return; // handled separately
+    if(btn.id==='noRunBtn') return;
     btn.addEventListener('click',()=>{
       group.querySelectorAll('.opt').forEach(b=>b.classList.remove('selected'));
       btn.classList.add('selected');
-      const q = group.dataset.q;
-      const val = btn.dataset.val;
-      if(q==='q5' && val==='custom'){
-        const box = document.getElementById('q5custom');
-        box.style.display='block';
-        box.focus();
-        answers[q] = box.value || '(custom)';
-        box.oninput = ()=>{ answers[q] = box.value || '(custom)'; };
+      const q=group.dataset.q,val=btn.dataset.val;
+      if(q==='q5'&&val==='custom'){
+        const box=document.getElementById('q5custom');
+        box.style.display='block';box.focus();
+        answers[q]=box.value||'(custom)';
+        box.oninput=()=>{answers[q]=box.value||'(custom)';};
       } else {
-        const box = document.getElementById('q5custom');
+        const box=document.getElementById('q5custom');
         if(box) box.style.display='none';
-        answers[q] = val;
+        answers[q]=val;
       }
     });
   });
 });
 
-// ── NO BUTTON ON Q10 (runs away) ──
-const noRunBtn = document.getElementById('noRunBtn');
-let noRunAttempts = 0;
-const noRunTexts = ['no (i dare u to try 🫣)','nice try 😭','faster mam 👀','lmaoo 🫣','okay 😭 stop','u wish 😂','last chance ig','give up!! 😭'];
+const noRunBtn=document.getElementById('noRunBtn');
+let noRunAttempts=0;
+const noRunTexts=['no (i dare u to try 🫣)','nice try 😭','faster mam 👀','lmaoo 🫣','okay 😭 stop','u wish 😂','last chance ig','give up!! 😭'];
 function moveNoRunBtn(){
   if(noBtnBusy) return;
-  noBtnBusy = true;
-  noRunAttempts++;
-  noRunBtn.textContent = noRunTexts[Math.min(noRunAttempts, noRunTexts.length-1)];
-  const vw = window.innerWidth, vh = window.innerHeight;
-  const r = noRunBtn.getBoundingClientRect();
-  const x = Math.random()*(vw - r.width - 30) + 10;
-  const y = Math.random()*(vh - r.height - 30) + 10;
-  noRunBtn.style.position = 'fixed';
-  noRunBtn.style.zIndex = 999;
-  noRunBtn.style.left = x+'px';
-  noRunBtn.style.top = y+'px';
-  answers['q10'] = 'tried to click no but it ran away lol 😭';
-  setTimeout(()=>{ noBtnBusy = false; }, 350);
+  noBtnBusy=true;noRunAttempts++;
+  noRunBtn.textContent=noRunTexts[Math.min(noRunAttempts,noRunTexts.length-1)];
+  const vw=window.innerWidth,vh=window.innerHeight,r=noRunBtn.getBoundingClientRect();
+  noRunBtn.style.position='fixed';noRunBtn.style.zIndex=999;
+  noRunBtn.style.left=Math.random()*(vw-r.width-30)+10+'px';
+  noRunBtn.style.top=Math.random()*(vh-r.height-30)+10+'px';
+  answers['q10']='tried to click no but it ran away lol 😭';
+  setTimeout(()=>{noBtnBusy=false;},350);
 }
-noRunBtn.addEventListener('mouseenter', moveNoRunBtn);
-noRunBtn.addEventListener('touchstart', e=>{ e.preventDefault(); moveNoRunBtn(); });
-document.addEventListener('mousemove', e=>{
+noRunBtn.addEventListener('mouseenter',moveNoRunBtn);
+noRunBtn.addEventListener('touchstart',e=>{e.preventDefault();moveNoRunBtn();});
+document.addEventListener('mousemove',e=>{
   if(!noRunBtn.style.position) return;
-  const r = noRunBtn.getBoundingClientRect();
-  const dist = Math.hypot(e.clientX-(r.left+r.width/2), e.clientY-(r.top+r.height/2));
-  if(dist < 110) moveNoRunBtn();
+  const r=noRunBtn.getBoundingClientRect();
+  if(Math.hypot(e.clientX-(r.left+r.width/2),e.clientY-(r.top+r.height/2))<110) moveNoRunBtn();
 });
 
-// ── PROGRESS ──
-const TOTAL_Q = 14;
+const TOTAL_Q=14;
 function setProgress(pgNum){
-  // pgNum 1-14 = questions, 0 = intro
-  const qIdx = pgNum - 1; // 0-based question index
-  if(pgNum < 1 || pgNum > TOTAL_Q) return;
-  const pct = Math.round((qIdx / TOTAL_Q) * 100);
-  // set all progress bars on this page
-  const fill = document.getElementById('progressFill'+(pgNum===1?'':pgNum));
-  const label = document.getElementById('progressLabel'+(pgNum===1?'':pgNum));
-  if(fill) fill.style.width = pct+'%';
-  if(label) label.textContent = `question ${pgNum} of ${TOTAL_Q}`;
+  if(pgNum<1||pgNum>TOTAL_Q) return;
+  const pct=Math.round(((pgNum-1)/TOTAL_Q)*100);
+  const fill=document.getElementById('progressFill'+(pgNum===1?'':pgNum));
+  const label=document.getElementById('progressLabel'+(pgNum===1?'':pgNum));
+  if(fill) fill.style.width=pct+'%';
+  if(label) label.textContent=`question ${pgNum} of ${TOTAL_Q}`;
 }
 
-// ── PAGE NAV ──
-let currentPg = 0;
+let currentPg=0;
 function goTo(n){
-  const cur = document.getElementById(currentPg===0?'pg0':'pg'+currentPg);
-  if(cur) cur.classList.remove('active');
-  currentPg = n;
-  const next = document.getElementById(n==='final'?'pgFinal':'pg'+n);
-  if(next) next.classList.add('active');
-  // set progress
-  if(n>=1 && n<=TOTAL_Q) setProgress(n);
+  document.getElementById(currentPg===0?'pg0':'pg'+currentPg).classList.remove('active');
+  currentPg=n;
+  document.getElementById(n==='final'?'pgFinal':'pg'+n).classList.add('active');
+  if(n>=1&&n<=TOTAL_Q) setProgress(n);
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-// ── PHONE ──
 function submitYesPhone(){
-  const num = document.getElementById('phoneNum').value.trim();
-  if(!num){ showToast('drop a number first mam 👀'); return; }
-  answers['phone'] = num;
+  const num=document.getElementById('phoneNum').value.trim();
+  if(!num){showToast('drop a number first mam 👀');return;}
+  answers['phone']=num;
   document.getElementById('phoneInputArea').style.display='none';
-  const msg = document.getElementById('phoneSkipped');
-  msg.style.display='block';
-  msg.textContent='number saved 💌 okay wow';
+  document.getElementById('phoneSkipped').style.display='none';
+  document.getElementById('thankYouCard').style.display='block';
   document.getElementById('finalBtn').style.display='block';
 }
 
-const noPhoneTexts=['nope 🙅‍♀️','really? 🫣','come on mam 😭','just drop it ig','are u being rude 🥺','okay FINE but 👀','last chance 😭','ur killing me ','fine be like that','just do it!!'];
+const noPhoneTexts=['nope 🙅‍♀️','really? 🫣','come on mam 😭','just drop it ig','are u being rude 🥺','okay FINE but 👀','last chance 😭','ur killing me 💔','fine be like that','just do it!!'];
 function noPhoneClick(){
   if(noBtnBusy) return;
-  noBtnBusy = true;
-  noPhoneAttempts++;
-  const btn = document.getElementById('noPhoneBtn');
-  const vw=window.innerWidth, vh=window.innerHeight;
-  btn.style.position='fixed'; btn.style.zIndex=9999;
-  const x=Math.random()*(vw-180)+20, y=Math.random()*(vh-80)+20;
-  btn.style.left=x+'px'; btn.style.top=y+'px';
-  btn.textContent = noPhoneTexts[Math.min(noPhoneAttempts-1, noPhoneTexts.length-1)];
-  setTimeout(()=>{ noBtnBusy=false; },400);
+  noBtnBusy=true;noPhoneAttempts++;
+  const btn=document.getElementById('noPhoneBtn');
+  const vw=window.innerWidth,vh=window.innerHeight;
+  btn.style.position='fixed';btn.style.zIndex=9999;
+  btn.style.left=Math.random()*(vw-180)+20+'px';
+  btn.style.top=Math.random()*(vh-80)+20+'px';
+  btn.textContent=noPhoneTexts[Math.min(noPhoneAttempts-1,noPhoneTexts.length-1)];
+  setTimeout(()=>{noBtnBusy=false;},400);
   if(noPhoneAttempts>=6){
     setTimeout(()=>{
-      btn.style.position='relative'; btn.style.left=''; btn.style.top='';
+      btn.style.position='relative';btn.style.left='';btn.style.top='';
       btn.textContent='okay fine i give up 😭';
       btn.onclick=()=>{
         answers['phone']='declined to share number ig';
@@ -696,25 +779,22 @@ document.addEventListener('mousemove',e=>{
   const btn=document.getElementById('noPhoneBtn');
   if(!btn||!btn.style.position) return;
   const r=btn.getBoundingClientRect();
-  const dist=Math.hypot(e.clientX-(r.left+r.width/2), e.clientY-(r.top+r.height/2));
-  if(dist<110) noPhoneClick();
+  if(Math.hypot(e.clientX-(r.left+r.width/2),e.clientY-(r.top+r.height/2))<110) noPhoneClick();
 });
 
-// ── SUBMIT ──
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbz7lfyej_XUXDSXDeBeWAsKoVvMQHasaz1_HV3rTuUloo_PK8pM9GrLxT2f-JjlWikGmQ/exec';
+const SHEET_URL='https://script.google.com/macros/s/AKfycbz7lfyej_XUXDSXDeBeWAsKoVvMQHasaz1_HV3rTuUloo_PK8pM9GrLxT2f-JjlWikGmQ/exec';
 async function submitAll(){
- // showToast('saving ur responses ig 💾');
-  const payload = { timestamp: new Date().toISOString(), ...answers };
-  try {
+  const payload={timestamp:new Date().toISOString(),...answers};
+  try{
     await fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-  } catch(e){ console.log('sent ig'); }
+  }catch(e){console.log('sent ig');}
   goTo('final');
-  for(let i=0;i<24;i++) setTimeout(spawnFlyer, i*70);
+  for(let i=0;i<24;i++) setTimeout(spawnFlyer,i*70);
 }
 
 function showToast(msg){
   const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
+  t.textContent=msg;t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),2500);
 }
 </script>
