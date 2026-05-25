@@ -703,7 +703,7 @@ document.addEventListener('mousemove',e=>{
 // ── SUBMIT ──
 const SHEET_URL = 'https://script.google.com/macros/s/AKfycbz7lfyej_XUXDSXDeBeWAsKoVvMQHasaz1_HV3rTuUloo_PK8pM9GrLxT2f-JjlWikGmQ/exec';
 async function submitAll(){
-  showToast('saving ur responses ig 💾');
+ // showToast('saving ur responses ig 💾');
   const payload = { timestamp: new Date().toISOString(), ...answers };
   try {
     await fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
